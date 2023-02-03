@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    public function username(){
+    public function username()
+    {
         return 'correo';
     }
     /*
@@ -28,14 +29,14 @@ class LoginController extends Controller
     |
     */
 
-     use AuthenticatesUsers;
+    // use AuthenticatesUsers;
 
     /**
      * Where to redirect users after login.
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo ='/';
 
     /**
      * Create a new controller instance.
@@ -64,58 +65,71 @@ class LoginController extends Controller
     public function autenticate(Request $request)
     {
         // return ['algo' => "llegamos"];
-        $estado=false;
+        $estado = false;
         // $user=null;
-        $mensaje='';
+        $mensaje = '';
         $token = $request->token;
-        $user = Socialite::driver('google')->userFromToken($token);
-        
+
+
         DB::beginTransaction();
         try {
-           
+            $user2=null;
+            $userReal=null;
+            $userSocialite = Socialite::driver('google')->userFromToken($token);
+            if (!is_null($userSocialite)) {
 
-            
-            
-             
-            if (!is_null($user)) {
+                $buscaSP=Socialprofile::where('social_id','=',$userSocialite->getId())->where('social_name','=','Google')->first();
+                // return $buscaSP;
+                if(is_null($buscaSP)){
+                    $userT = User::where("correo", $userSocialite->getEmail())->first();
+                    if (is_null($userT)) {
+                        $userT = new User();
+                        $userT->nombre = $userSocialite->getName();
+                        $userT->correo = $userSocialite->getEmail();
+                        $userT->save();
 
-                $validaEmail=User::where("correo",$user->getEmail())->first();
+
+                    }
+
+                    $socialProfile = new Socialprofile();
+                    $socialProfile->user_id = $userT->id_user;
+                    $socialProfile->social_id = $userSocialite->getId();
+                    $socialProfile->social_avatar = $userSocialite->getAvatar();
+                    $socialProfile->social_name = 'Google';
+                    $socialProfile->save();
+                    $user2 = Auth::login($userT);
+                    $userReal=Auth::user();
+                }else{
+                    $user2=User::where("id_user",'=',$buscaSP->user_id)->first();
+                    $user2=Auth::login($user2);
+                    $userReal=Auth::user();
+                }
+                
 
                 $estado = true;
-                if(is_null($validaEmail)){
-                    $userT = new User();
-                    $userT->nombre = $user->getName();
-                    $userT->correo = $user->getEmail();
-                    $userT->save();                    
-                }
-
-                // $buscaSP==Socialprofile::where(    )
-
-                $socialProfile=new Socialprofile();
-                $socialProfile->user_id=$userT->id_usuario;
-                $socialProfile->social_id=$user->getId();
-                $socialProfile->social_avatar=$user->getAvatar();
-                $socialProfile->social_name='Google';
-                $socialProfile->save();
+               
+            }else{
+                $estado=false;
+                $mensaje="Hubo un Problema";
             }
-            $mensaje='Ingreso exitoso';
+
+           
+
+            $mensaje = 'Ingreso exitoso';
         } catch (\Exception $ex) {
-            $estado=false;
-            $user=null;
-            $mensaje='Hubo un error '.$ex->getMessage();
+            $estado = false;
+            $user2 = null;
+            $userReal=null;
+            $mensaje = 'Hubo un error ' . $ex->getMessage();
             DB::rollback();
         }
         DB::commit();
-        $mensaje='';
-        // Auth::attempt(['correo'=>$user->getEmail()]);
-        $user2= User::where('correo','=',$user->getEmail())->first();
-        $user2=Auth::login($user2);
+        return ['estado' => $estado, 'user' => $userReal, 'mensaje' => $mensaje];
 
-        return ['estado' => $estado, 'user' => $user2,'mensaje'=>$mensaje];
+    }
 
-        // 
-        // $token=$user->createToken("Auth")->plainTextToken;
-        // return response(['user'=>$user,'token'=>$token],200);
-        // return ['estado' => $estado, 'user' => $user,'mensaje'=>$mensaje,'res'=>$res];
+    public function logout(){
+        Auth::logout();
+        return redirect('/');
     }
 }

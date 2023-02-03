@@ -28,7 +28,7 @@ Route::get('/obtenerusuario',function(){
 
 // Auth::routes();
 Route::post('login',[LoginController::class,'autenticate']);
-
+Route::get('/logout',[LoginController::class,'logout']);
 // Route::get('/login/google',[LoginController::class,'redirectToProvider']);
  
 // Route::get('/login/google/callback',[LoginController::class,'handleProviderCallback']);
