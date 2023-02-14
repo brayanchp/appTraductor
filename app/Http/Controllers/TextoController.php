@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tema;
+use App\Models\Texto;
 use Illuminate\Http\Request;
 use App\libraries\Funciones;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class TemaController extends Controller
+class TextoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,20 +17,18 @@ class TemaController extends Controller
      */
     public function index(Request $request)
     {
-        // $filtro=$request->get('filtro');
- 
         $descripcion=$request->get('descripcion');
         // $filas=$request->get('filas');
         $filas=6;
         $page=$request->get('page');
 
-        $temas=DB::table('tema');
+        $temas=DB::table('texto');
 
         if($descripcion!='' && !is_null($descripcion)){
-            $temas=$temas->where('nombre','like',"%$descripcion%");
+            $temas=$temas->where('titulo','like',"%$descripcion%");
         }
 
-        $temas=$temas->orderby('nombre','ASC');
+        $temas=$temas->orderby('titulo','ASC');
 
         $lista=$temas->get();
 
@@ -60,7 +58,7 @@ class TemaController extends Controller
 				   ->limit($filas)
                    ->get();
 
-    	return ['temas' => $lista, 'cantidad' => ($cantidad<10?'0'.$cantidad:$cantidad).($cantidad==1?'Tema':'Tema'), 'page' => $page, 'paginador' => $arrPag, 'inicio' => $inicio, 'fin' => $fin, 'paramInicio' => $paramInicio, 'paramFin' => $paramFin];
+    	return ['textos' => $lista, 'cantidad' => ($cantidad<10?'0'.$cantidad:$cantidad).($cantidad==1?'Tema':'Tema'), 'page' => $page, 'paginador' => $arrPag, 'inicio' => $inicio, 'fin' => $fin, 'paramInicio' => $paramInicio, 'paramFin' => $paramFin];
     }
 
     /**
@@ -87,10 +85,10 @@ class TemaController extends Controller
             $mensaje = "";
             $band = true;
             $nombre=$request->get('nombre');
-            $validaNombre=Tema::where('nombre',$nombre);
+            $validaNombre=Texto::where('titulo',$nombre);
 
             if($id!=0){
-                $validaNombre=$validaNombre->where('id_tema','<>',$id);
+                $validaNombre=$validaNombre->where('id_texto','<>',$id);
             }
              
             $validaNombre=$validaNombre->first();
@@ -98,16 +96,17 @@ class TemaController extends Controller
             if(is_null($validaNombre)){
 
                 if($id==0){
-                    $tema=new Tema();
+                    $texto=new Texto();
 
                 }else{
-                    $tema=Tema::find($id);
+                    $texto=Texto::find($id);
                 }
 
-                $tema->nombre=$nombre;
-                $tema->descripcion=$request->descripcion;
-                $tema->user_id=Auth::user()->id_user;
-                $tema->save();
+                $texto->titulo=$nombre;
+                $texto->tema_id=$request->id_tema;
+                $texto->user_id=Auth::user()->id_user;
+                $texto->contenido=$request->contenido;
+                $texto->save();
                 $cad='';
                 
                 if($id==0){
@@ -137,23 +136,24 @@ class TemaController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Tema  $tema
+     * @param  \App\Models\Texto  $texto
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        $estado=true;
-        $tema=Tema::find($id);
-        return ['estado'=>(is_null($tema)?false:true),'tema'=>$tema];
+    {   
+        $texto=DB::table('texto')->join('tema','texto.tema_id','=','tema.id_tema')->where('texto.id_texto',$id)->first();
+
+        return ['estado'=>(is_null($texto)?false:true),'texto'=>$texto];
+        
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Tema  $tema
+     * @param  \App\Models\Texto  $texto
      * @return \Illuminate\Http\Response
      */
-    public function edit(Tema $tema)
+    public function edit(Texto $texto)
     {
         //
     }
@@ -162,10 +162,10 @@ class TemaController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Tema  $tema
+     * @param  \App\Models\Texto  $texto
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Tema $tema)
+    public function update(Request $request, Texto $texto)
     {
         //
     }
@@ -173,7 +173,7 @@ class TemaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Tema  $tema
+     * @param  \App\Models\Texto  $texto
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request)
@@ -182,12 +182,12 @@ class TemaController extends Controller
         $exito=false;
         DB::beginTransaction();
         try {
-            $tema=Tema::find($request->id);
-            $tema->is_active=$request->param;
-            $tema->save();
-            $mensaje='Tema desactivado';
+            $texto=Texto::find($request->id);
+            $texto->is_active=$request->param;
+            $texto->save();
+            $mensaje='Texto desactivado';
             if($request->param==1){
-                $mensaje='Tema activado';
+                $mensaje='Texto activado';
             }
             $exito=true;
         } catch (\Exception $ex) {
@@ -198,24 +198,13 @@ class TemaController extends Controller
         DB::commit();
         return ['estado'=>$exito,'mensaje'=>$mensaje];
     }
-
     public function count()
     {
         $user=Auth::user();
         // return $user;
-        $cantidadTemas=DB::table('tema')->where('user_id','=',$user->id_user)->where('is_active','=',1)->get();
+        $cantidadTextos=DB::table('texto')->where('user_id','=',$user->id_user)->where('is_active','=',1)->get();
 
-        $cantidadTemas=count($cantidadTemas);
-        return ['cantidadTemas'=>$cantidadTemas];
-    }
-
-    public function buscar(Request $request)
-    {
-        $user=Auth::user();
-        $query=$request->querytemas;
-        $temas=DB::table('tema')->where('user_id','=',$user->id_user)->where('is_active','=',1)->
-        where('nombre','like','%'.$query.'%')->get();
-        
-        return ['temas'=>$temas];
+        $cantidadTextos=count($cantidadTextos);
+        return ['cantidadTextos'=>$cantidadTextos];
     }
 }
