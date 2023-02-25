@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\TextoController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -25,10 +26,11 @@ Route::get('/obtenerusuario',function(){
   dd($user);
     dd('hecho');
 });
-
+ 
 // Auth::routes();
 Route::post('login',[LoginController::class,'autenticate']);
 Route::get('/logout',[LoginController::class,'logout']);
+// Route::get('/traduccion',[TextoController::class,'audio']);
 // Route::get('/login/google',[LoginController::class,'redirectToProvider']);
  
 // Route::get('/login/google/callback',[LoginController::class,'handleProviderCallback']);
@@ -40,3 +42,4 @@ Route::get('/logout',[LoginController::class,'logout']);
 //     return $request->user();
 // });
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+ 

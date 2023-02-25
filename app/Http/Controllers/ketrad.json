@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "apptraductor-376407",
+  "private_key_id": "a314b21d12739cfd474bfadb32b482ea4af51211",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC5/yyYr1oI2JIG\nVEQ79esbnpwCMZgUawST2xESytdiQQR6iMB4HzRV4/KLDKymRYRHrVzujsoTpYwp\nXs/Sm/j0pQDrzu9QLSn5KMUnxW2CIFKRSjJEvl447snfqwF2YEZHrDXYbHE0izZg\n1TW+0Ey2YVcYbxYzGQtT663bH3clHzbhE2fe3AJKVueUgH7ry9+SouydiGLc5gHo\nzD0sS+cTD14Py8o7JNjX+XS+QbTuHAcaqsYR39dAdHWkMNc8QNKRuozIhGmAqWmS\nFxoZyGws2G+0kjRxOjWSVqov+yRigkGNcTZum+9Waqbx2z7dN4L7Ohv82mA2q2Vi\ndg9vTUvPAgMBAAECggEAScd3XL+eAslJr1oI0RIdJ1EUyGf80AidgbsRvDcbFd39\nlU+erWePXoyzvsWRzMjhjn8t0HFypjVyckyqOnxlVkIHqgJlepPXxP6PqlWNuWLx\n7bEVXKB5BrNt/5u5UkghSLf+ifGGPFYGhYW9som1DFlzb31NPIqwLCNeTP/fxqi7\n+yFylKyyjynQtgffYuLWA5lgwmrN7lOx+mWHimFOPfFz3402l+ydXLnu0wT3DOMM\nHB6DESui+NfzV0hjBVk+DkMcC7RkXWBjVy4j96gbkOwfXYNjCeM3WIbUXVVp/2YT\nXgvACcxnk5ReAT9rSgd3z2djvtlSY64sQ2kU1eHtVQKBgQDr5/FOhl/8qOn4OEz2\nrUXTGawhxGpREMpLpN/8X0ASPb+jE+7yDlPOkzs1Nag/4gS7cpholY56pQOYzuhx\nKBD8Ce2FtiRxH0+Byp8Y7VQxYs7mXvxNJBYyBCTVqZ2akUiPAlxW3J30+mLRrhWP\nTrMlEzkdcXmtc3oTkIcblEI91QKBgQDJ1u8A1sfTWcgLjNKJDJb8xDRrVuTNkVeY\nrr5KZzSBVD+bYhuzEEB8c50/r8tjX1m4w9ShJpkynOEd/doofEgv1RFISyBjqTcy\nIIFDwmaeRKV37XSxQDBQ5mvh08OKSrQCpr3wXp5NFBcj4EOhNuB7UmswJNNOSyV2\nu4WmqqFhEwKBgAuALEByxp0vsvBZ9k6UVfIbr0uaIsC++83CRPUtw5bgEcamgyCj\n2Cwa+2j1q7UplKd6x7lZiS+rechqVeSmWmWfKkg5f/9P0nV2Zlk1wMQDmCic+tnb\n54UatJ0B/t/5MztdlxjY+o5l4olsXjq1UIB/NmqcDJ2LIqlvg1ax3KTdAoGBAMGS\nA/0F/vZO8G9DStZs4JDhinQ3DY+oiB3B2HV6rPwrVCUs3evI9k9kgbaGXcSbuWxd\nQxqZ7eqAUdV1kzeomYJmEQEIK7PooSrNyaq2UbwPkbGGZZdoO+4aTfRyJuIF6sVw\nLFDOLXs2fUrG1ZVTD861qF6vsocvwmowRWkl00dJAoGBAMs00w4km1h9rE6syJUm\nh/LwDwASKCqqrVs3NYcyBPzXN6IL4s36M98tH+9D/rv4xNvkx3QvZqgkbU1zp2Da\nV4tYImpT3lIuTBys60uxWoDUaPoeeAUSd8jc9TeeTBW43Qsi3nvQGWp0Gqv5I8tn\nCBKLvu5LDJvDlaasd+Bw3CVb\n-----END PRIVATE KEY-----\n",
+  "client_email": "bchiroque-unprg-edu-pe@apptraductor-376407.iam.gserviceaccount.com",
+  "client_id": "112433280477100185111",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/bchiroque-unprg-edu-pe%40apptraductor-376407.iam.gserviceaccount.com"
+}

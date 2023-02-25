@@ -112,24 +112,22 @@ class LoginController extends Controller
                 $estado=false;
                 $mensaje="Hubo un Problema";
             }
-
-           
-
             $mensaje = 'Ingreso exitoso';
         } catch (\Exception $ex) {
             $estado = false;
             $user2 = null;
             $userReal=null;
+            $userSocialite=null;
             $mensaje = 'Hubo un error ' . $ex->getMessage();
             DB::rollback();
         }
         DB::commit();
-        return ['estado' => $estado, 'user' => $userReal, 'mensaje' => $mensaje];
+        return ['estado' => $estado, 'user' => $userReal, 'mensaje' => $mensaje,'userGoogle'=>$userSocialite];
 
     }
 
     public function logout(){
         Auth::logout();
-        return redirect('/');
+        // return redirect('/');
     }
 }

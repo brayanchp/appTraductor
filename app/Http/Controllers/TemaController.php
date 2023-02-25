@@ -23,15 +23,15 @@ class TemaController extends Controller
         // $filas=$request->get('filas');
         $filas=6;
         $page=$request->get('page');
-
+        $user=Auth::user();
         $temas=DB::table('tema');
 
         if($descripcion!='' && !is_null($descripcion)){
             $temas=$temas->where('nombre','like',"%$descripcion%");
         }
-
+        $temas=$temas->where('user_id','=',$user->id_user);
         $temas=$temas->orderby('nombre','ASC');
-
+        
         $lista=$temas->get();
 
         $cantidad = count($lista);

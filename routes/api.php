@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\ExamenController;
 use App\Http\Controllers\TemaController;
 use App\Http\Controllers\TextoController;
 use Illuminate\Support\Facades\Auth;
@@ -32,10 +33,17 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/textos/destroy',[TextoController::class,'destroy']);
     Route::post('/textos/store',[TextoController::class,'store']);
     Route::get('/textos/{id}',[TextoController::class,'show']);
+    Route::post('/traducirtexto',[TextoController::class,'traducirTexto']);
+    Route::post('/traduccionaudio',[TextoController::class,'audio']);
+
+    Route::post('/examen/buscar',[ExamenController::class,'index']);
 
     //dashboard
     Route::get('/counttemas',[TemaController::class,'count']);
     Route::get('/counttextos',[TextoController::class,'count']);
+    Route::get('/countexamenes',[ExamenController::class,'count']);
+    Route::get('/countexamenespendientes',[ExamenController::class,'countpendientes']);
+
 
 });
 
